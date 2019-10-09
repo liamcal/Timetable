@@ -13,23 +13,7 @@ namespace ConsoleRunner
 			using (var schoolContext = new SchoolContext())
 			{
 				DataGenerator.CreateSampleSchoolData(schoolContext);
-
-				var students = schoolContext.Students.Where(s => s.Degree == "Bachelor of Computer Science").Take(3).ToList();
-				var subjects = schoolContext.Subjects.Take(3).ToList();
-
-				schoolContext.Add(TimetableHelper.EnrolStudentInSubject(students[0], subjects[0]));
-				schoolContext.Add(TimetableHelper.EnrolStudentInSubject(students[0], subjects[1]));
-				schoolContext.Add(TimetableHelper.EnrolStudentInSubject(students[1], subjects[1]));
-				schoolContext.Add(TimetableHelper.EnrolStudentInSubject(students[1], subjects[2]));
-				schoolContext.Add(TimetableHelper.EnrolStudentInSubject(students[2], subjects[0]));
-
-				schoolContext.SaveChanges();
-
-				PrintTimeTableForStudent(schoolContext, students[0]);
-				PrintTimeTableForStudent(schoolContext, students[1]);
-				PrintTimeTableForStudent(schoolContext, students[2]);
-
-				//RunInteractive(schoolContext);
+				RunInteractive(schoolContext);
 			}
 		}
 
@@ -39,9 +23,9 @@ namespace ConsoleRunner
 			Console.WriteLine("Options:");
 			Console.WriteLine("\tVIEW <studentName>");
 			Console.WriteLine("\tENROL <studentName> <subjectCode>");
-			Console.WriteLine("\tUNENROL <studentName> <subjectCode>");
+			Console.WriteLine("\tDROP <studentName> <subjectCode>");
 			Console.WriteLine("\tQUIT");
-			Console.WriteLine("> ");
+			Console.Write("> ");
 
 			var input = Console.ReadLine().Trim();
 			var components = input.Split(' ', StringSplitOptions.RemoveEmptyEntries);
@@ -51,12 +35,92 @@ namespace ConsoleRunner
 			{
 				if (command == "VIEW")
 				{
-
-					var student = schoolContext.Students.Single(s => s.Name == components[1]);
-					var lessons = TimetableHelper.GetLessonsForStudent(schoolContext, student);
+					var student = schoolContext.Students.SingleOrDefault(s => s.Name == components[1]);
+					if (student == null)
+					{
+						Console.WriteLine($"Student {components[1]} not found");
+					}
+					else
+					{
+						PrintTimeTableForStudent(schoolContext, student);
+					}
 				}
-			}
 
+				else if (command == "ENROL")
+				{
+					var student = schoolContext.Students.SingleOrDefault(s => s.Name == components[1]);
+					var subject = schoolContext.Subjects.SingleOrDefault(s => s.Code == components[2]);
+
+					if (student == null)
+					{
+						Console.WriteLine($"Student {components[1]} not found");
+					}
+					else if (subject == null)
+					{
+						Console.WriteLine($"Subject {components[2]} not found");
+					}
+					else
+					{
+						var enrolment = schoolContext.Enrolments.SingleOrDefault(e => e.StudentId == student.Id && e.SubjectId == subject.Id);
+
+						if (enrolment != null)
+						{
+							Console.WriteLine($"{components[1]} is already enroleld in {components[2]}");
+						}
+						else
+						{
+							schoolContext.Add(new Enrolment()
+							{
+								Student = student,
+								Subject = subject,
+							});
+							schoolContext.SaveChanges();
+							Console.WriteLine($"{components[1]} now enrolled in {components[2]}");
+						}
+					}
+				}
+
+				else if (command == "DROP")
+				{
+					var student = schoolContext.Students.SingleOrDefault(s => s.Name == components[1]);
+					var subject = schoolContext.Subjects.SingleOrDefault(s => s.Code == components[2]);
+
+					if (student == null)
+					{
+						Console.WriteLine($"Student {components[1]} not found");
+					}
+					else if (subject == null)
+					{
+						Console.WriteLine($"Subject {components[2]} not found");
+					}
+					else
+					{
+						var enrolment = schoolContext.Enrolments.SingleOrDefault(e => e.StudentId == student.Id && e.SubjectId == subject.Id);
+
+						if (enrolment == null)
+						{
+							Console.WriteLine($"{components[1]} is not yet enrolled in {components[2]}");
+						}
+						else
+						{
+							schoolContext.Remove(enrolment);
+							schoolContext.SaveChanges();
+							Console.WriteLine($"{components[1]} dropped enrolment in {components[2]}");
+						}
+					}
+				}
+
+				else
+				{
+					Console.WriteLine("Unrecognized command");
+				}
+
+				Console.Write("> ");
+
+				input = Console.ReadLine().Trim();
+				components = input.Split(' ', StringSplitOptions.RemoveEmptyEntries);
+				command = components.First().ToUpperInvariant();
+			}
 		}
 
 		static void PrintTimeTableForStudent(SchoolContext schoolContext, Student student)
