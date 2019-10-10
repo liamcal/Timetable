@@ -136,15 +136,6 @@ namespace ConsoleRunner
 				Console.WriteLine($"{lesson.Subject.Code} {lesson.LessonType}: {lesson.StartTime} - {lesson.EndTime}, Room: {lesson.RoomNumber}, Teacher: {lesson.Teacher.Name}");
 			}
 			Console.WriteLine(new string('-', 60));
-
-			//foreach (var student in students)
-			//{
-			//	Console.WriteLine($"{"Id:",-10}{student.Id}");
-			//	Console.WriteLine($"{"Name:",-10}{student.Name}");
-			//	Console.WriteLine($"{"Email:",-10}{student.Email}");
-			//	Console.WriteLine($"{"Degree:",-10}{student.Degree}");
-			//	Console.WriteLine(new string('-', 60));
-			//}
 		}
 	}
 }
