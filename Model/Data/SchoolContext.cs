@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-using JetBrains.Annotations;
-using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.EntityFrameworkCore;
 using Model.Models;
 
 namespace Model.Data
@@ -27,11 +23,11 @@ namespace Model.Data
 
 		protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
 		{
-			optionsBuilder.UseLazyLoadingProxies();
 			if (!optionsBuilder.IsConfigured)
 			{
-				optionsBuilder.UseSqlServer("Data Source=(localdb)\\MSSQLLocalDB;Initial Catalog=School;");
+				optionsBuilder.UseSqlServer("Data Source=.;Initial Catalog=School;Persist Security Info=True;User Id=sa; Password=chooseabetterpassword123");
 			}
+			optionsBuilder.UseLazyLoadingProxies();
 		}
 
 	}

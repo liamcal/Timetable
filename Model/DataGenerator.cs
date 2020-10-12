@@ -1,7 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 using Model.Data;
 using Model.Models;
 
@@ -22,7 +20,6 @@ namespace Model
 
 		static void CreateClasses(SchoolContext context)
 		{
-
 			var prg101 = context.Subjects.Single(s => s.Code == "prg101");
 			var prg102 = context.Subjects.Single(s => s.Code == "prg102");
 			var prg201 = context.Subjects.Single(s => s.Code == "prg201");
