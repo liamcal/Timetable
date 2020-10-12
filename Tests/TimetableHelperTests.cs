@@ -24,15 +24,13 @@ namespace Tests
 			var testClass5 = new Lesson() { Subject = testSubject2, Teacher = testStaff, StartTime = "TUE 11:00", EndTime = "TUE 12:00", LessonType = LessonType.Lecture, RoomNumber = "123" };
 			var testClass6 = new Lesson() { Subject = testSubject3, Teacher = testStaff, StartTime = "MON 13:00", EndTime = "TUE 14:00", LessonType = LessonType.Lecture, RoomNumber = "123" };
 
+			var enrolment1 = new Enrolment() { Student = testStudent, Subject = testSubject1 };
+			var enrolment2 = new Enrolment() { Student = testStudent, Subject = testSubject3 };
+
 			context.Add(testStudent);
 			context.Add(testStaff);
 			context.AddRange(testSubject1, testSubject2, testSubject3);
 			context.AddRange(testClass1, testClass2, testClass3, testClass4, testClass5, testClass6);
-			context.SaveChanges();
-
-			var enrolment1 = new Enrolment() { Student = testStudent, Subject = testSubject1 };
-			var enrolment2 = new Enrolment() { Student = testStudent, Subject = testSubject3 };
-
 			context.AddRange(enrolment1, enrolment2);
 			context.SaveChanges();
 
@@ -67,12 +65,11 @@ namespace Tests
 			var testSubject1 = new Subject() { Code = "TES101", Name = "Intro to testing", Description = "The basics of good unit testing" };
 			var testSubject2 = new Subject() { Code = "TES102", Name = "Testing fundamentals", Description = "The next steps for good unit testing" };
 	
+			var enrolment = new Enrolment() { Student = testStudent, Subject = testSubject1 };
+
 			context.Add(testStudent);
 			context.Add(testStaff);
 			context.AddRange(testSubject1, testSubject2);
-			context.SaveChanges();
-
-			var enrolment = new Enrolment() { Student = testStudent, Subject = testSubject1 };
 			context.Add(enrolment);
 			context.SaveChanges();
 
