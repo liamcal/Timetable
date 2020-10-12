@@ -88,7 +88,7 @@ namespace ConsoleRunner
 			}
 			else
 			{
-				PrintTimeTableForStudent(schoolContext, student);
+				PrintTimeTableForStudent(student);
 			}
 		}
 
@@ -156,14 +156,14 @@ namespace ConsoleRunner
 			}
 		}
 
-		static void PrintTimeTableForStudent(SchoolContext schoolContext, Student student)
+		static void PrintTimeTableForStudent(Student student)
 		{
 			Console.WriteLine($"{"Name:",-10}{student.Name}");
 			Console.WriteLine($"{"Email:",-10}{student.Email}");
 			Console.WriteLine($"{"Degree:",-10}{student.Degree}");
 			Console.WriteLine("Timetable:");
 
-			var lessons = TimetableHelper.GetLessonsForStudent(schoolContext, student);
+			var lessons = TimetableHelper.GetLessonsForStudent(student);
 			foreach (var lesson in lessons)
 			{
 				Console.WriteLine($"{lesson.Subject.Code} {lesson.LessonType}: {lesson.StartTime} - {lesson.EndTime}, Room: {lesson.RoomNumber}, Teacher: {lesson.Teacher.Name}");

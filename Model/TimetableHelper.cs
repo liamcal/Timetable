@@ -1,19 +1,15 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
-using Model.Data;
 using Model.Models;
 
 namespace Model
 {
 	public static class TimetableHelper
 	{
-		public static List<Lesson> GetLessonsForStudent(SchoolContext context, Student student)
+		public static List<Lesson> GetLessonsForStudent(Student student)
 		{
-			var subjects = context.Subjects
-				.Where(subject => subject.Enrolments
-				.Any(enrolment => enrolment.StudentId == student.Id));
-			return subjects.SelectMany(subject => subject.Lessons).ToList();
+			var subjectsForStudent = student.Enrolments.Select(enrolment => enrolment.Subject).Distinct();
+			return subjectsForStudent.SelectMany(subject => subject.Lessons).ToList();
 		}
 	}
 }
