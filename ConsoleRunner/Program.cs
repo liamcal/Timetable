@@ -117,7 +117,7 @@ namespace ConsoleRunner
 
 				if (enrolment != null)
 				{
-					Console.WriteLine($"{studentName} is already enroleld in {subjectCode}");
+					Console.WriteLine($"{studentName} is already enrolled in {subjectCode}");
 				}
 				else
 				{
