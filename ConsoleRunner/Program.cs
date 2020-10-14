@@ -31,27 +31,33 @@ namespace ConsoleRunner
 
 			while (command != "QUIT")
 			{
-				if (command == "LIST")
+				try
 				{
-					List(schoolContext, args[0].ToUpperInvariant());
+					if (command == "LIST")
+					{
+						List(schoolContext, args[0].ToUpperInvariant());
+					}
+					else if (command == "VIEW")
+					{
+						View(schoolContext, args[0]);
+					}
+					else if (command == "ENROL")
+					{
+						Enrol(schoolContext, args[0], args[1]);
+					}
+					else if (command == "DROP")
+					{
+						Drop(schoolContext, args[0], args[1]);
+					}
+					else
+					{
+						Console.WriteLine("Unrecognized command");
+					}
 				}
-				else if (command == "VIEW")
-				{
-					View(schoolContext, args[0]);
-				}
-				else if (command == "ENROL")
-				{
-					Enrol(schoolContext, args[0], args[1]);
-				}
-				else if (command == "DROP")
-				{
-					Drop(schoolContext, args[0], args[1]);
-				}
-				else
+				catch (IndexOutOfRangeException)
 				{
 					Console.WriteLine("Unrecognized command");
 				}
-
 				Console.Write("> ");
 				(command, args) = ParseInput();
 			}

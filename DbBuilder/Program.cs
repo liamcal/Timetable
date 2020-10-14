@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Linq;
 using Microsoft.EntityFrameworkCore;
-using Model;
 using Model.Data;
 
 namespace DbBuilder
@@ -14,7 +13,6 @@ namespace DbBuilder
 			{
 				PromptToBuildDb(schoolContext);
 				Console.WriteLine("Completed");
-				Console.ReadLine();
 			}
 		}
 

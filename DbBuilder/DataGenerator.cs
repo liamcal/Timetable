@@ -3,7 +3,7 @@ using System.Linq;
 using Model.Data;
 using Model.Models;
 
-namespace Model
+namespace DbBuilder
 {
 	public static class DataGenerator
 	{
